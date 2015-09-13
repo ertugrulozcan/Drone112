@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Drone 112 Kontrol Paneli</title>
+
+	<meta charset="UTF-8"></meta>
+
+	<link rel="stylesheet" type="text/css" href="css/default.css" />
+	<link rel="stylesheet" type="text/css" href="css/component.css" />
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+
+	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+	<script src="client.js"></script>
+	<script src="js/controller.js"></script>
+	<script src="js/console.js"></script>
+	<script src="js/nodecopter-client.js"></script>
+	<script src="js/extra/modernizr.custom.js"></script>
+
+	<!-- Internal script'ler-->
+	<script language="javascript">
+		// Sayfa yüklendiğinde tetiklenir. İlk hazırlıkların yapılmasından sorumlu metod.
+		function OnLoad()
+		{
+			Log("Sayfa yüklendi.");
+
+			// Klavyeden alınan girişlere tepki vermesi için event handler metodları hazırlanır.
+			this.onkeydown = function(event) { OnKeyPressed(event.keyCode); };
+			this.onkeyup = function(event) { OnKeyReleased(event.keyCode); };
+		}
+	</script>
+</head>
+<body onload="OnLoad()">
+	<!-- Video oynatıcı -->
+	<!--
+	<video id="Camera" autoplay poster="assets/images/background.jpg">
+		<source src="" type="video/mp4">
+	</video>
+	-->
+
+	<div id="CameraFeed"></div><!--"width: 100%; height: 100%; position: fixed; background: black;"-->
+	<script>
+        new NodecopterStream(document.getElementById("CameraFeed"), {hostname:'localhost', port: 3001});
+    </script>
+
+	<image src="assets/images/logo_bg_curve.png" width="330" height="168" style="position: fixed; margin-left: 0;"></image>
+	<image src="assets/images/logo1.png" width="240" height="120" style="position: fixed; margin-left: 5px; margin-top: 25px;"></image>
+
+	<!-- Üst panel (başlık paneli için) -->
+	<div id="TitlePanel">
+		<button class="md-trigger" data-modal="modal-11" style="float: right; margin-right: 350px;">Hakkında</button>
+	</div>
+
+	<div class="md-modal md-effect-11" id="modal-11">
+		<div class="md-content">
+			<h3>Hakkında</h3>
+			<div>
+				<ul>
+					<li>
+						<strong>Geliştiriciler; </strong></br></br>
+						<a href="http://github.com/bngzcn" target="_blank">Bengü Özcan</a></br>
+						<div style="font-size: 60%; opacity: 0.6;">bengu.ozcan@bil.omu.edu.tr</div>
+						<a href="http://github.com/drykya92" target="_blank">Derya Kaya</a></br>
+						<div style="font-size: 60%; opacity: 0.6;">derya.kaya@bil.omu.edu.tr</div>
+						<a href="http://github.com/eerdn" target="_blank">Esra Erden</a></br>
+						<div style="font-size: 60%; opacity: 0.6;">esra.erden@bil.omu.edu.tr</div>
+					</li></br>
+					<p>
+						<strong>Kontrol tuşları; </strong></br>
+						<table>
+							<td style="width: 50%;">
+								<li style="font-size: 80%;">İleri : Yukarı tuşu</li>
+								<li style="font-size: 80%;">Geri : Aşağı tuşu</li>
+								<li style="font-size: 80%;">Sağa : Sağ tuşu</li>
+								<li style="font-size: 80%;">Sola : Sol tuşu</li>
+							</td>
+							<td style="width: 50%;">
+								<li style="font-size: 80%;">Sola çark : 7 tuşu</li>
+								<li style="font-size: 80%;">Sağa çark : 9 tuşu</li>
+								<li style="font-size: 80%;">İrtifa artırma : 8 tuşu</li>
+								<li style="font-size: 80%;">İrtifa azaltma : 2 tuşu</li>
+							</td>
+						</table>
+					</p>
+				</ul>
+				
+				<button class="md-close">Kapat</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Alt panel (Konsol ve kontrol paneli için) -->
+	<div id="BottomPanel">
+		<div class="ConsoleDiv">
+			<b style="margin-left: 5px; font-size: 90%; color: red;">Konsol</b></br>
+			<textarea id="Console" rows="12" cols="210" readonly></textarea>
+		</div>
+		
+		<div id="ControlButtons">
+			<div id="BatteryInfo" style="width: 40px; height: 100%; float: left; position: fixed; right: 400px; font-size: 80%;">
+				
+			</div>
+
+			<!-- Aç/Kapa butonu -->
+			<div style="width: 60px; height: 100%; position: relative; float: left;">
+	            <input id="OnOffButton" type="image" class="ImageButton" src="assets/icons/off.png" onclick="OnOffButtonClick();" style="width: 40px; height: 40px; position: absolute; top: 5px;"/>
+	        </div>
+
+			<!-- Kontrol butonları (İleri/Geri/Sağa/Sola) -->
+			<div id="DirectionButtons" class="Grid" onmouseover="ControlButtonsOnMouseOver();" onmouseout="ControlButtonsOnMouseOut();">
+			    <div class="Row">
+			        <div id="ClockwiseLeftButtonCell" class="Cell">
+		        		<input id="ClockwiseLeftButton" type="image" class="ImageButton" src="assets/icons/clockwiseLeft.png" onmousedown="ClockwiseLeftPressed();" onmouseup="ClockwiseLeftReleased();"/>
+			        </div>
+			        <div id="FrontButtonCell" class="Cell">
+			            <input id="FrontButton" type="image" class="ImageButton" src="assets/icons/up.png" onmousedown="FrontPressed();" onmouseup="FrontReleased();"/>
+			        </div>
+			        <div id="ClockwiseRightButtonCell" class="Cell">
+		        		<input id="ClockwiseRightButton" type="image" class="ImageButton" src="assets/icons/clockwiseRight.png" onmousedown="ClockwiseRightPressed();" onmouseup="ClockwiseRightReleased();"/>
+			        </div>
+			    </div>
+			    <div class="Row">
+			        <div id="LeftButtonCell" class="Cell">
+			            <input id="LeftButton" type="image" class="ImageButton" src="assets/icons/left.png" onmousedown="LeftPressed();" onmouseup="LeftReleased();"/>
+			        </div>
+			        <div class="Cell"></div>
+			        <div id="RightButtonCell" class="Cell">
+			            <input id="RightButton" type="image" class="ImageButton" src="assets/icons/right.png" onmousedown="RightPressed();" onmouseup="RightReleased();"/>
+			        </div>
+			    </div>
+			    <div class="Row">
+			        <div class="Cell"></div>
+			        <div id="BackButtonCell" class="Cell">
+			            <input id="BackButton" type="image" class="ImageButton" src="assets/icons/down.png" onmousedown="BackPressed();" onmouseup="BackReleased();"/>
+			        </div>
+			        <div class="Cell"></div>
+			    </div>
+			</div>
+
+			<!-- İrtifa butonları (yüksel, alçal) -->
+			<div id="AltitudeButtons" onmouseover="AltitudeButtonsOnMouseOver();" onmouseout="AltitudeButtonsOnMouseOut();">
+				<input id="UpButton" type="image" class="ImageButton" src="assets/icons/takeoff.png" onmousedown="UpPressed();" onmouseup="UpReleased();" style="height: 40px; position: absolute; top: 10px;"/>
+				<input id="DownButton" type="image" class="ImageButton" src="assets/icons/takeon.png" onmousedown="DownPressed();" onmouseup="DownReleased();" style="height: 40px; position: absolute; bottom: 0px;"/>
+			</div>
+		</div>
+	</div>
+
+	<script src="js/extra/classie.js"></script>
+	<script src="js/extra/modalEffects.js"></script>
+</body>
+</html>

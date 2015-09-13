@@ -1,0 +1,206 @@
+body
+{
+	margin: 0;
+	padding: 0;
+	font-family: "Segoe UI";
+}
+
+video#Camera
+{
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	min-width: 100%;
+	min-height: 100%;
+	width: auto;
+	height: auto;
+	z-index: -100;
+	background: url(assets/images/background.jpg) no-repeat;
+	background-size: cover;
+}
+
+#CameraFeed
+{
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    overflow: hidden;
+}
+
+#CameraFeed canvas
+{
+    width: 100%;
+    height: 100%;
+}
+
+div#ControlButtons
+{
+	width:300px; 
+	height:180px; 
+	margin-right: 40px;
+	margin-bottom: 15px;
+	position: fixed; 
+	bottom: 0; 
+	right: 0;
+}
+
+div#DirectionButtons
+{
+	width: 180px; 
+	height: 100%; 
+	position: relative; 
+	float: left;
+}
+
+div#AltitudeButtons
+{
+	width: 40px; 
+	height: 100%; 
+	float: right;
+	position: relative;
+}
+
+div#TitlePanel
+{
+	width: 100%; 
+	height: 49px; 
+	position: fixed; 
+	margin-left: 330px; 
+	top: 0; 
+	background-color: rgba(0, 0, 0, 0.76);
+	border-bottom: 1px solid white;
+	color: white;
+	font-size: 135%;
+	font-family: "Segoe UI";
+	font-weight: 700;
+	padding-top: 8px;
+	padding-left: 15px;
+}
+
+div#BottomPanel
+{
+	width: 100%; 
+	height: 210px; 
+	position: fixed; 
+	margin-left: 0; 
+	bottom: 0; 
+	background-color: rgba(0, 0, 0, 0.75);
+	border-top: 1px solid white;
+}
+
+div#Authors
+{
+	font-size: 80%;
+	font-family: "Segoe UI";
+	font-weight: 100;
+	padding-top: 5px;
+	float: right; 
+	margin-right: 370px;
+}
+
+/* unvisited link */
+a:link
+{
+    color: white;
+}
+
+/* visited link */
+a:visited
+{
+    color: white;
+}
+
+/* mouse over link */
+a:hover
+{
+    color: white;
+}
+
+/* selected link */
+a:active
+{
+    color: white;
+}
+
+a:link
+{
+    text-decoration: none;
+}
+
+a:visited
+{
+    text-decoration: none;
+}
+
+
+.Grid
+{
+    display: table;
+}
+
+.Row
+{
+    display: table-row;
+}
+
+.Cell
+{
+	width: 60px;
+	height: 60px;
+    display: table-cell;
+    border: solid;
+    border-width: 0;
+}
+
+.ImageButton
+{
+	width: 100%;
+	height: 100%;
+	outline:none;
+}
+
+.ConsoleDiv
+{
+	margin-left: 20px;
+	margin-top: 10px;
+}
+
+textarea[id="Console"]
+{
+	color: white;
+	font-family: Consolas;
+	font-size: 80%;
+	font-weight: lighter;
+	background-color: transparent;
+	border: 1px solid transparent;
+	outline: none;
+	resize: none;
+}
+
+::-webkit-scrollbar
+{
+    width: 5px;
+}
+ 
+::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb
+{
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(255,0,0,0.8); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+::-webkit-scrollbar-thumb:window-inactive
+{
+	background: rgba(255,0,0,0.4); 
+}
